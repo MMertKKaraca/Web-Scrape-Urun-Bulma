@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body id="loginPage">
+    <div class="container">
+        <% if(locals.successfully){%>
+          <div id="registerSuccessfully"><%= successfully %></div>
+        <%}%>
+        <form method="post">
+          <h1>Giriş</h1>
+            <% if(locals.error){%>
+              <div id="loginError"> <%= error %></div>
+            <%}%>
+          <div class="txt_field">
+            <input name="userName" type="text" maxlength="25" required>
+            <span></span>
+            <label for="userName">Kullanıcı Adı</label>
+          </div>
+          <div class="txt_field">
+            <input name="userPassword" type="password" maxlength="25" required>
+            <span></span>
+            <label for="userPassword">Şifre</label>
+          </div>
+          <div id="logSub">
+            <input type="submit" value="Giriş">
+          </div>
+          <div class="signup_link">
+            <a href="/register">Kayıt Ol</a>
+          </div>
+        </form>
+      </div>
+      <script>
+        document.cookie = "succsessfullyCreated = true; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/login;";
+        
+      </script>
+</body>
+</html>

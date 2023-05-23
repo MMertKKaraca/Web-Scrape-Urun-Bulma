@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body id="registerPage">
+  <div class="container">
+    <form method="post">
+      <h1>Kayıt Ol</h1>
+      <div class="txt_field">
+        <input name="userName" type="text" maxlength="25" required >
+        <span></span>
+        <label for="userName">Kullanıcı Adı</label>
+      </div>
+        <% if(locals.error){%>
+          <div id="registerError"> <%= error %></div>
+        <%}%>
+      <div class="txt_field">
+        <input name="userPassword" type="password" maxlength="25" required>
+        <span></span>
+        <label for="userPassword">Şifre</label>
+      </div>
+      <div id="regSub" style="height: 80px">
+        <input type="submit" value="Kayıt Ol">
+      </div>
+    </form>
+    </div>
+</body>
+</html>

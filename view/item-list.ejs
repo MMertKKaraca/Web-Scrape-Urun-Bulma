@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
+</head>
+<body>
+    <div id="content">
+        <div id="topnav">
+            <div id="MainPageRedirect">
+                <a href="/">Ana Sayfa</a>
+            </div>
+            <div id="searchBar">
+                <form method="get" action="/result">
+                    <input name="searchItem" id="searchInput" type="text" placeholder="Aratılacak ürünü yazın" required>
+                    <button id="searchIcon" class="fa fa-search" type="submit">
+                </form>
+            </div>
+            <div id="userBar">
+                <div id="list">
+                    <a href="/list">
+                        Liste
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="dm"></div>
+        <% if(locals.errorMsg){%>
+            <div id="errorMsg">
+                <p><%=errorMsg%></p>
+            </div>
+        <%}%>
+        <% if(locals.Items){%> 
+            <div id = "resultArea">
+                <div id="result">
+                    <div id = "items">
+                        <% Items.forEach(function(item,i){%>
+                            <div class="item">
+                                <div class="itemImage">
+                                    <a href="<%= item.itemUrl %>">
+                                        <img src= "<%= item.itemImage %>" alt="<%= item.itemTitle %>">
+                                    </a>
+                                </div>
+                                <div class="itemBottom">
+                                    <div class="itemTitle">
+                                        <h3 title="<%=item.itemTitle %>">
+                                            <a href="<%= item.itemUrl %>">
+                                                <span><%= item.itemTitle%></span>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div class="itemPrice">
+                                        <a href="<%= item.itemUrl %>">
+                                            <span><% if(item.itemPrice != null){%><%=item.itemPrice%><%}%></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="itemSeller">
+                                    <a href="<%= item.itemUrl %>">
+                                        Satıcıya Git
+                                    </a>
+                                    <div id="deleteFromList" class="deleteFromList fa-solid fa-xmark fa-3x active" title="Listeden Çıkar"></div>
+                                </div>
+                            </div>
+                        <%});%>
+                    </div>
+                </div>
+            </div>
+        <%}%>
+    </div>
+    <script>
+        // cookies object
+        var cookies = document.cookie;
+        var cookiesArray = cookies.replace(/=/g,":").split("; ");
+        var cookiesObj = {};
+        cookiesArray.forEach((element)=>{
+            var cstr = element.split(":");
+            cookiesObj[cstr[0]]=cstr[1];
+        });
+         
+        // dynamic login&register / userName&userOptn
+        var userBar = document.getElementById('userBar');
+        var dm = document.getElementById('dm');
+        if(cookiesObj.loginCheck=="false" | cookiesObj.loginCheck==undefined){
+            var aTagLogin = document.createElement('a');
+            var aTagRegister = document.createElement('a');
+            aTagLogin.href="/login";
+            aTagLogin.innerHTML="Giriş Yap";
+            aTagLogin.style="margin-right: 16px;"
+            aTagRegister.href="/register";
+            aTagRegister.innerHTML="Kayıt Ol";
+            userBar.appendChild(aTagRegister);
+            userBar.appendChild(aTagLogin);
+            
+        }
+        else{
+            if(cookiesObj.loginCheck=="true"){
+                var spansDiv = document.createElement('div');
+                var spanTagName = document.createElement('span');
+                var spanTagUserOptions = document.createElement('span');
+                var spanTriAngelDown=document.createElement('span');
+
+                var dropDownMenu=document.createElement('div');
+                var dropDownMenuLogout=document.createElement('a');
+
+                spanTagName.innerHTML=cookiesObj.userName.toUpperCase();
+                spanTagName.className="userName";
+
+                spanTagUserOptions.innerHTML="Hesap";
+                spanTagUserOptions.className="userOpt";
+
+                spansDiv.id="spansDiv";
+                spansDiv.style += " flex-direction: column; display: flex;justify-content: space-between; flex-direction: column;"
+
+                spanTriAngelDown.className="fas fa-caret-down";
+                
+                dropDownMenu.id="navBar-DropDownMenu"
+
+                dropDownMenuLogout.id="navBar-DropDownMenu-a";
+
+                dropDownMenuLogout.href=window.location.href;
+                dropDownMenuLogout.innerHTML="Çıkış Yap";
+
+        
+         
+                spanTagUserOptions.appendChild(spanTriAngelDown);
+                spansDiv.appendChild(spanTagName);
+                spansDiv.appendChild(spanTagUserOptions);
+
+                userBar.appendChild(spansDiv);
+
+                dropDownMenu.appendChild(dropDownMenuLogout);
+                dm.appendChild(dropDownMenu);
+
+                userBar.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                userBar.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenu.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                dropDownMenu.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenuLogout.addEventListener("click",()=>{
+                    document.cookie="userId=1; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="userName=mert; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="loginCheck=true; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                })
+            }
+        }
+
+        // delete from list button
+        document.querySelectorAll('.deleteFromList').forEach((el)=>{
+            el.addEventListener("click",(e)=>{
+                var item = $(e.target).closest('div.item');
+                var itemUrl = $(item).find('a').attr('href');
+                var itemImage = $(item).find('.itemImage img').attr('src');
+                var itemTitle = $(item).find('.itemTitle span').text();
+                var itemPrice = $(item).find('.itemPrice span').text();
+
+                var itemObj = {};
+                itemObj = {
+                    "itemUrl":itemUrl,
+                    "itemImage":itemImage,
+                    "itemTitle":itemTitle,
+                    "itemPrice":itemPrice
+                }
+
+                fetch('/list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Delete-Item':'true'
+                    },
+                    body: JSON.stringify(itemObj),
+                })
+                .then(() => {
+                    item.remove();
+                    if(document.getElementById('items').innerText==""){
+                        document.getElementById("resultArea").remove();
+                        var c= document.createElement('div');
+                        var p = document.createElement('p');
+                        c.id="errorMsg";
+                        p.innerHTML="Listede Ürün Yok";
+                        c.appendChild(p);
+                        document.getElementById('content').appendChild(c);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            })
+        })
+    </script>
+</body>
+</html>

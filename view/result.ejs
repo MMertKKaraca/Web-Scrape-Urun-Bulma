@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
+</head>
+<body>
+    <div id="content">
+        <div id="topnav">
+            <div id="MainPageRedirect">
+                <a href="/">Ana Sayfa</a>
+            </div>
+            <div id="searchBar">
+                <form method="get" action="">
+                    <input name="searchItem" id="searchInput" type="text" placeholder="Aratılacak ürünü yazın" required>
+                    <button id="searchIcon" class="fa fa-search" type="submit">
+                </form>
+            </div>
+            <div id="userBar">
+                <div id="list">
+                    <a href="/list">
+                        Liste
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="dm"></div>
+        <% if(locals.errorMsg){%>
+            <div id="errorMsg">
+                <p><%=errorMsg%></p>
+            </div>
+        <%}%>
+        <% if(locals.Items){%> 
+            <div id = "resultArea">
+                <div id = "sellerOption">
+                    <div id="sortByPrice">
+                        <div id="price-text">
+                            <p>Fiyat Aralığı</p>
+                        </div>
+                        <div id="sortByPriceValue">
+                            <input type="text" name="min-price-value" id="min-price-value" placeholder="En Az">
+                            <input type="text" name="max-price-value" id="max-price-value" placeholder="En Çok">
+                            <button id="min-max-btn" class="fa fa-search" type="submit">
+                        </div>
+                    </div>
+                </div>
+                <div id="result">
+                    <div id = "items">
+                        <% Items.forEach(function(item,i){%>
+                            <div class="item">
+                                <div class="itemImage">
+                                    <div id="addToList" class="addToList fa-regular fa-plus fa-3x" title="Listeye Ekle"></div>
+                                    <a href="<%= item.itemUrl %>">
+                                        <img src= "<%= item.itemImage %>" alt="<%= item.itemTitle %>">
+                                    </a>
+                                </div>
+                                <div class="itemBottom">
+                                    <div class="itemTitle">
+                                        <h3 title="<%=item.itemTitle %>">
+                                            <a href="<%= item.itemUrl %>">
+                                                <span><%= item.itemTitle%></span>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div class="itemPrice">
+                                        <a href="<%= item.itemUrl %>">
+                                            <span><% if(item.itemPrice != null){%><%=item.itemPrice + " " + item.itemPriceSymbol %><%}%></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="itemSeller">
+                                    <a href="<%= item.itemUrl %>">
+                                        Satıcıya Git
+                                    </a>
+                                </div>
+                            </div>
+                        <%});%>
+                    </div>
+                   <div id="pagination"></div>
+                </div>
+                <div id="itemsOption">
+                    <div id="slct">
+                        <div id="sortText">
+                            <p>Sırala</p>
+                        </div>
+                        <select name="sortPrice" id="sortPrice">
+                            <option value="suggested" id="suggested">Önerilen</option>
+                            <option value="min-price" id="min-price">Fiyat: Düşükten Yükseğe</option>
+                            <option value="max-price" id="max-price">Fiyat : Yüksekten Düşüğe</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        <%}%>
+    </div>
+    <script>
+        // cookies object
+        var cookies = document.cookie;
+        var cookiesArray = cookies.replace(/=/g,":").split("; ");
+        var cookiesObj = {};
+        cookiesArray.forEach((element)=>{
+            var cstr = element.split(":");
+            cookiesObj[cstr[0]]=cstr[1];
+        });
+         
+        // dynamic login&register / userName&userOptn
+        var userBar = document.getElementById('userBar');
+        var dm = document.getElementById('dm');
+        if(cookiesObj.loginCheck=="false" | cookiesObj.loginCheck==undefined){
+            var aTagLogin = document.createElement('a');
+            var aTagRegister = document.createElement('a');
+            aTagLogin.href="/login";
+            aTagLogin.innerHTML="Giriş Yap";
+            aTagLogin.style="margin-right: 16px;"
+            aTagRegister.href="/register";
+            aTagRegister.innerHTML="Kayıt Ol";
+            userBar.appendChild(aTagRegister);
+            userBar.appendChild(aTagLogin);
+            
+        }
+        else{
+            if(cookiesObj.loginCheck=="true"){
+                var spansDiv = document.createElement('div');
+                var spanTagName = document.createElement('span');
+                var spanTagUserOptions = document.createElement('span');
+                var spanTriAngelDown=document.createElement('span');
+
+                var dropDownMenu=document.createElement('div');
+                var dropDownMenuLogout=document.createElement('a');
+
+                spanTagName.innerHTML=cookiesObj.userName.toUpperCase();
+                spanTagName.className="userName";
+
+                spanTagUserOptions.innerHTML="Hesap";
+                spanTagUserOptions.className="userOpt";
+
+                spansDiv.id="spansDiv";
+                spansDiv.style += " flex-direction: column; display: flex;justify-content: space-between; flex-direction: column;"
+
+                spanTriAngelDown.className="fas fa-caret-down";
+                
+                dropDownMenu.id="navBar-DropDownMenu"
+
+                dropDownMenuLogout.id="navBar-DropDownMenu-a";
+
+                dropDownMenuLogout.href=window.location.href;
+                dropDownMenuLogout.innerHTML="Çıkış Yap";
+
+        
+         
+                spanTagUserOptions.appendChild(spanTriAngelDown);
+                spansDiv.appendChild(spanTagName);
+                spansDiv.appendChild(spanTagUserOptions);
+
+                userBar.appendChild(spansDiv);
+
+                dropDownMenu.appendChild(dropDownMenuLogout);
+                dm.appendChild(dropDownMenu);
+
+                userBar.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                userBar.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenu.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                dropDownMenu.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenuLogout.addEventListener("click",()=>{
+                    document.cookie="userId=1; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="userName=mert; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="loginCheck=true; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                })
+            }
+        }
+        
+        // searchBar inside dynamic search text
+        const queryObject = new URLSearchParams(window.location.search, true);
+        var searchT = queryObject.get('searchItem');
+        document.getElementById('searchInput').value=searchT;
+
+        //page bar
+        var currentPageNum = parseInt(queryObject.get('page'));
+        var mPageNum = parseInt("<%= maxPage %>");
+        var sidePageNum = 2; //Number of links two side of current page
+        if(Number.isNaN(currentPageNum) == true){
+            currentPageNum = 1;
+        }
+            //previous
+        if(currentPageNum > 1){
+            if(currentPageNum != 2){
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`page=${currentPageNum}`,`page=${currentPageNum-1}`)}" class="btn prev"><span><i class="fas fa-angle-left"></i> Önceki</span></a>`;
+            }
+            else{
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`&page=${currentPageNum}`,'')}" class="btn prev"><span><i class="fas fa-angle-left"></i> Önceki</span></a>`
+            }
+        }
+
+            //between
+        if(currentPageNum >= sidePageNum*2){
+            pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`&page=${currentPageNum}`,``)}" class="numb"><span>1</span></a>`;
+            pagination.innerHTML += '<span class="dots">...</span>';
+        }
+
+        for(z=currentPageNum-sidePageNum;z<=currentPageNum+sidePageNum;z++){
+            if(z>0 && z<=mPageNum){
+                if(z==currentPageNum){
+                    pagination.innerHTML += `<a href="" class="numb active"><span>${currentPageNum}</span></a>`;
+                }
+                else{
+                    if(currentPageNum ==1){
+                        pagination.innerHTML += `<a href="${window.location.pathname+window.location.search}&page=${z}" class="numb"><span>${z}</span></a>`;
+                    }
+                    else{
+                        pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`page=${currentPageNum}`,`page=${z}`)}" class="numb"><span>${z}</span></a>`;
+                    }
+                }
+            }
+        }
+
+        if(currentPageNum < mPageNum && currentPageNum-1  <= mPageNum - sidePageNum*2){
+            pagination.innerHTML += '<span class="dots">...</span>';
+            if(currentPageNum == 1){
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search}&page=${mPageNum}" class="numb"><span>${mPageNum}</span></a>`;
+            }
+            else{
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`&page=${currentPageNum}`,`&page=${mPageNum}`)}" class="numb"><span>${mPageNum}</span></a>`;    
+            }
+        }
+
+            //next
+        if(currentPageNum<mPageNum){
+            if(currentPageNum == 1){
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search}&page=${currentPageNum+1}" class="btn next"><span>Sonraki <i class="fas fa-angle-right"></i></span></a>`
+            }
+            else{
+                pagination.innerHTML += `<a href="${window.location.pathname+window.location.search.replace(`page=${currentPageNum}`,`page=${currentPageNum+1}`)}" class="btn next"><span>Sonraki <i class="fas fa-angle-right"></i></span></a>`
+            }
+        }
+
+
+        // sort items by min/max or suggested price include set page url
+        var sortP = document.getElementById("sortPrice");
+        var sortT = queryObject.get('sort');
+        sortP.addEventListener("change",()=>{
+            sortP.style.pointerEvents = "none";
+            sessionStorage.setItem('sort', sortP.value);
+            if(sortT != null){
+                location = window.location.pathname + window.location.search.replace(`&sort=${sortT}`,`&sort=${sortP.value}`);
+            }
+            else{
+                location = window.location.pathname + window.location.search +"&sort="+ sortP.value;
+            }
+        });
+
+        if(sessionStorage.getItem('sort')){
+            if(sortT != null){
+                var c = sessionStorage.getItem('sort');
+                if(sortT == c){
+                    sortP.options.namedItem(c).selected = true;
+                }
+                else{
+                    sessionStorage.removeItem('sort');
+                }
+            }
+            else{
+                sessionStorage.removeItem('sort');
+            }
+        }
+        else{
+            if(sortT != null){
+                sessionStorage.setItem('sort',sortT);
+                var c = sessionStorage.getItem('sort');
+                if(sortP.options.namedItem(c)!=null){
+                    sortP.options.namedItem(c).selected = true;
+                }
+                else{
+                    sessionStorage.removeItem('sort',sortT);
+                }
+            }
+        }
+
+        // sort items by price min-max value
+        var sortPriceMinValue = document.getElementById("min-price-value");
+        var sortPriceMaxValue = document.getElementById("max-price-value");
+        var spmmBtn = document.getElementById("min-max-btn");
+
+        var querySortPriceValues = queryObject.get('sortPriceValues');
+       
+        spmmBtn.addEventListener("click",()=>{
+            spmmBtn.style.pointerEvents = "none";
+            sortPriceMinValue = Number(sortPriceMinValue.value);
+            sortPriceMaxValue = Number(sortPriceMaxValue.value);
+
+            if(sortPriceMinValue != NaN && sortPriceMinValue > 0 && sortPriceMaxValue>sortPriceMinValue){
+                sessionStorage.setItem('sortValueMin',sortPriceMinValue);
+                sessionStorage.setItem('sortValueMax',sortPriceMaxValue);
+                if(querySortPriceValues != null){
+                    location = window.location.pathname + window.location.search.replace(`sortPriceValues=${querySortPriceValues}`,`sortPriceValues=${sortPriceMinValue}-${sortPriceMaxValue}`);
+                }
+                else{
+                    location = window.location.pathname + window.location.search +`&sortPriceValues=${sortPriceMinValue}-${sortPriceMaxValue}`;
+                }
+            }
+            else{
+                sessionStorage.removeItem('sortValueMin',sortPriceMinValue);
+                sessionStorage.removeItem('sortValueMax',sortPriceMaxValue);
+                if(querySortPriceValues != null){
+                    location = window.location.pathname + window.location.search.replace(`&sortPriceValues=${querySortPriceValues}`,"");
+                }
+                else{
+                    location = window.location.pathname + window.location.search
+                }
+            }
+        });
+
+    
+        if(sessionStorage.getItem('sortValueMin') && sessionStorage.getItem('sortValueMax')){
+            if(querySortPriceValues != null){
+
+                var tmp = querySortPriceValues.split("-");
+                var querySortMinValue = Number(tmp[0]);
+                var querySortMaxValue = Number(tmp[1]);
+
+                if(querySortMinValue == sessionStorage.getItem('sortValueMin') && querySortMaxValue == sessionStorage.getItem('sortValueMax')){
+                    sortPriceMinValue.value = sessionStorage.getItem('sortValueMin');
+                    sortPriceMaxValue.value = sessionStorage.getItem('sortValueMax');
+                }
+                else{
+                    sessionStorage.removeItem('sortValueMin');
+                    sessionStorage.removeItem('sortValueMax');
+                }
+            }
+            else{
+                sessionStorage.removeItem('sortValueMin');
+                sessionStorage.removeItem('sortValueMax');
+            }
+        }
+        else{
+            if(querySortPriceValues != null){
+                var tmp = querySortPriceValues.split("-");
+                var querySortMinValue = Number(tmp[0]);
+                var querySortMaxValue = Number(tmp[1]);
+
+                if(querySortMinValue<querySortMaxValue){
+                    sessionStorage.setItem('sortValueMin',querySortMinValue);
+                    sessionStorage.setItem('sortValueMax',querySortMaxValue);
+
+                    sortPriceMinValue.value = sessionStorage.getItem('sortValueMin');
+                    sortPriceMaxValue.value = sessionStorage.getItem('sortValueMax');   
+                }
+            }
+        }
+
+        // make unclickable search icon & search bar after enter input
+        var searchBarIcon = document.getElementById("searchIcon");
+        var searchBar = document.getElementById("searchInput");
+
+        searchBarIcon.addEventListener("click",()=>{
+            searchBarIcon.style.pointerEvents ="none";
+            searchBar.style.pointerEvents ="none";
+            searchBar.blur();
+        });
+
+        // add to list button
+        var userId = cookiesObj.userId;
+        document.querySelectorAll('.addToList').forEach((el)=>{
+            el.addEventListener("click",(e)=>{
+                if(userId!=undefined){
+                    if (e.target.className.match(/(?:^|\s)active(?!\S)/)){    
+                        var item = $(e.target).closest('div.item');
+                        var itemUrl = $(item).find('a').attr('href');
+                        var itemImage = $(item).find('.itemImage img').attr('src');
+                        var itemTitle = $(item).find('.itemTitle span').text();
+                        var itemPrice = $(item).find('.itemPrice span').text();
+
+                        var itemObj = {};
+                        itemObj = {
+                            "itemUrl":itemUrl,
+                            "itemImage":itemImage,
+                            "itemTitle":itemTitle,
+                            "itemPrice":itemPrice
+                        }
+
+                        fetch('/list', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Delete-Item':'true'
+                            },
+                            body: JSON.stringify(itemObj),
+                        })
+                        .then(() => {
+                            e.target.classList.remove('fa-solid','fa-xmark','active');
+                            e.target.classList.add('fa-regular','fa-plus');
+                            e.target.title="Listeye Ekle";
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                    }
+                    else{
+                        var item = $(e.target).closest('div.item');
+                        var itemUrl = $(item).find('a').attr('href');
+                        var itemImage = $(item).find('.itemImage img').attr('src');
+                        var itemTitle = $(item).find('.itemTitle span').text();
+                        var itemPrice = $(item).find('.itemPrice span').text();
+
+                        var itemObj = {};
+                        itemObj = {
+                            "itemUrl":itemUrl,
+                            "itemImage":itemImage,
+                            "itemTitle":itemTitle,
+                            "itemPrice":itemPrice
+                        }
+
+                        fetch('/list', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Set-Item':'true'
+                            },
+                            body: JSON.stringify(itemObj),
+                        })
+                        .then(() => {
+                            e.target.classList.remove('fa-regular','fa-plus');
+                            e.target.classList.add('fa-solid','fa-xmark','active');
+                            e.target.title="Listeden Çıkar";
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                    }
+                }
+                else{
+                    alert("Listeye Eklemek İçin Giriş Yap");
+                }
+                
+            })
+        })
+
+    </script>
+</body>
+</html>

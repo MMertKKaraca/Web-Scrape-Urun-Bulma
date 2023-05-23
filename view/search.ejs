@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" type="text/css">
+</head>
+<body style="overflow: hidden">
+    <div id="content">
+        <div id="topnav">
+            <div id="MainPageRedirect">
+                <a href="/">Ana Sayfa</a>
+            </div>
+            <div id="userBar">
+                <div id="list">
+                    <a href="/list">
+                        Liste
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="dm"></div>
+        <div id="searchBox">
+            <div id="searchBar">
+                <form method="get" action="/result">
+                    <input name="searchItem" id="searchInput" type="text" placeholder="Aratılacak ürünü yazın" required>
+                    <button id="searchIcon" class="fa fa-search" type="submit">
+                </form>
+            </div>
+            <div id="searchInfo">
+                <p><i>Amazon, Hepsiburada, N11 ve Trendyol siteleri için geçerlidir.</i></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var cookies = document.cookie;
+        //console.log(cookies);
+        var cookiesArray = cookies.replace(/=/g,":").split("; ");
+        var cookiesObj = {};
+        cookiesArray.forEach((element)=>{
+            var cstr = element.split(":");
+            cookiesObj[cstr[0]]=cstr[1];
+        });
+
+        // dynamic login&register / userName&userOptn
+        var userBar = document.getElementById('userBar');
+        var dm = document.getElementById('dm');
+        if(cookiesObj.loginCheck=="false" | cookiesObj.loginCheck==undefined){
+            var aTagLogin = document.createElement('a');
+            var aTagRegister = document.createElement('a');
+            aTagLogin.href="/login";
+            aTagLogin.innerHTML="Giriş Yap";
+            aTagLogin.style="margin-right: 16px;"
+            aTagRegister.href="/register";
+            aTagRegister.innerHTML="Kayıt Ol";
+            userBar.appendChild(aTagRegister);
+            userBar.appendChild(aTagLogin);
+            
+        }
+        else{
+            if(cookiesObj.loginCheck=="true"){
+                var spansDiv = document.createElement('div');
+                var spanTagName = document.createElement('span');
+                var spanTagUserOptions = document.createElement('span');
+                var spanTriAngelDown=document.createElement('span');
+
+                var dropDownMenu=document.createElement('div');
+                var dropDownMenuLogout=document.createElement('a');
+
+                spanTagName.innerHTML=cookiesObj.userName.toUpperCase();
+                spanTagName.className="userName";
+
+                spanTagUserOptions.innerHTML="Hesap";
+                spanTagUserOptions.className="userOpt";
+
+                spansDiv.id="spansDiv";
+                spansDiv.style += " flex-direction: column; display: flex;justify-content: space-between; flex-direction: column;"
+
+                spanTriAngelDown.className="fas fa-caret-down";
+                
+                dropDownMenu.id="navBar-DropDownMenu"
+
+                dropDownMenuLogout.id="navBar-DropDownMenu-a";
+
+                dropDownMenuLogout.href=window.location.href;
+                dropDownMenuLogout.innerHTML="Çıkış Yap";
+
+        
+         
+                spanTagUserOptions.appendChild(spanTriAngelDown);
+                spansDiv.appendChild(spanTagName);
+                spansDiv.appendChild(spanTagUserOptions);
+
+                userBar.appendChild(spansDiv);
+
+                dropDownMenu.appendChild(dropDownMenuLogout);
+                dm.appendChild(dropDownMenu);
+
+                userBar.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                userBar.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenu.addEventListener("mouseover",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="block";
+                })
+                dropDownMenu.addEventListener("mouseout",()=>{
+                    document.getElementById("navBar-DropDownMenu").style.display="none";
+                })
+                dropDownMenuLogout.addEventListener("click",()=>{
+                    document.cookie="userId=1; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="userName=mert; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                    document.cookie="loginCheck=true; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+                })
+            }
+        }
+
+        // make unclickable search icon & search bar after enter input
+        var searchBarIcon = document.getElementById("searchIcon");
+        var searchBar = document.getElementById("searchInput");
+
+        searchBarIcon.addEventListener("click",()=>{
+            searchBarIcon.style.pointerEvents ="none";
+            searchBar.style.pointerEvents ="none";
+            searchBar.blur();
+        });
+       
+    </script>
+</body>
+</html>

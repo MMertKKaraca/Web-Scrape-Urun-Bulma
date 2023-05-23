@@ -1,0 +1,515 @@
+body{
+  margin: 0;
+  padding: 0;
+  /*background-color: #f3f1f1;*/
+  font-family :'Source Sans Pro', sans-serif;
+  min-width: 870px ;
+}
+#loginPage,#registerPage{
+  /*background: linear-gradient(120deg,#2980b9, #8e44ad);*/
+  height: 100%;
+  overflow: hidden;
+}
+.container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.322);
+}
+.container h1{
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid silver;
+}
+.container form{
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+form .txt_field{
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
+.txt_field input{
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+}
+.txt_field label{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #918d8d;
+  transform: translateY(-50%);
+  font-size: 20px;
+  pointer-events: none;
+  transition: .5s;
+}
+.txt_field span::before{
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #2691d9;
+  transition: .5s;
+}
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label{
+  top: -13px;
+  color: #2691d9;
+}
+.txt_field input:focus ~ span::before,
+.txt_field input:valid ~ span::before{
+  width: 100%;
+}
+#logSub input[type="submit"],#regSub input[type="submit"]{
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+#logSub input[type="submit"]:hover,#regSub input[type="submit"]:hover{
+  background: #217ebd;
+  transition: .5s;
+}
+.signup_link{
+  margin: 30px 0;
+  text-align: center;
+  font-size: 20px;
+  color: #666666;
+}
+.signup_link a{
+  color: #2691d9;
+  text-decoration:none;
+}
+.signup_link a:hover{
+  text-decoration: underline;
+}
+#registerError,#loginError{
+  padding-left: 5px;
+  color: rgb(255, 41, 41);
+  font-size : 20px;
+}
+#registerSuccessfully{
+  padding-left: 5px;
+  color: rgb(32, 241, 77);
+  font-size : 30px;
+  text-align: center;
+}
+
+#topnav {
+  font-size: 22px;
+  overflow: hidden;
+  background-color: #20b2aa;
+  display: flex;
+  justify-content:space-between;
+  min-width: 779px;
+}
+
+/* Style the links inside the navigation bar */
+#topnav a {
+  float: left;
+  display: block;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the color of links on hover */
+#topnav a:hover {
+  background-color: #178f89da;
+}
+
+/* Style the search box inside the navigation bar */
+#topnav #userBar{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+}
+.userOpt{
+  padding-bottom: 5px;
+}
+.userName, .userOpt{
+  font-size:medium;
+  margin-left: 47px;
+  margin-right: 47px;
+  padding-top: 5px;
+  color: white;
+}
+#topnav #userBar .userOpt{
+  text-decoration: none;
+}
+#topnav #userBar .userOpt span{
+  padding-left: 5px;
+}
+#topnav #MainPageRedirect{
+  margin-left: 16px;
+}
+
+#dm{
+  direction: rtl;
+}
+#dm #navBar-DropDownMenu{
+  text-align: center;
+  background-color: #20b2aa;
+  display: none;
+  z-index: 1;
+  direction: rtl;
+  position: absolute;
+  height: max-content;
+  width: 150px;
+}
+ #dm #navBar-DropDownMenu-a{
+  width: 100%;
+  display: block;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  z-index: 1;
+  text-decoration: none;
+  direction: rtl;
+  color: white;
+  font-size: 18px;
+}
+#navBar-DropDownMenu-a:hover{
+  background-color: #178f89da;
+}
+
+#searchBox{
+  height: calc(100vh - 5.5vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#searchBar{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+#searchInput{
+  border: 1px solid rgba(0, 0, 0, 0.377);
+  border-width: 1px;
+  border-radius: 8px 0px 0px 8px;
+  padding: 10px;
+  width: 600px;
+  height: 30px;
+  font-size: 20px;
+  float: left;
+}
+#searchInput:focus::placeholder{   
+  color: transparent;
+}
+#searchBox button, #searchBar button{
+  cursor: pointer;
+  height: 52px;
+  width: 52px;
+  border-radius: 0px 8px 8px 0px;
+  border: 1px solid grey;
+}
+#searchBox button:hover,#searchBar button:hover,#sortByPriceValue button:hover{
+  background-color: #c9c9c9;
+}
+#errorMsg{
+  display: flex;
+  align-items: center;
+  height: 500px;
+  border: 1px solid black;
+  justify-content: center;
+  width: 600px;
+  margin: auto;
+  margin-top: 50px;
+}
+#errorMsg p{
+  color: red;
+  font-size: large;
+  text-align: center;
+}
+
+#resultArea{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 30px;
+  padding: 30px;
+ 
+}
+#sellerOption{
+  margin-top: 20px;
+
+}
+#result{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#items{
+  width: 100%;
+  max-width: 1360px;
+  height: auto;
+  display:flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.item{
+  padding: 0 8px;
+  width: 280px;
+  margin-bottom: 20px!important;
+  margin-top: 20px!important;
+  margin-right: 8px;
+  margin-left: 8px;
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+  display: grid;
+  align-content: space-between;
+
+}
+.itemImage{
+  overflow: hidden;
+  height: 280px;
+  position: relative;
+}
+
+#addToList{
+  position: absolute;
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  display: none;
+  cursor: pointer;
+  color: #20b2aa;
+  right: 0;
+  top: 2%;
+  z-index: 1;
+}
+.fa-plus{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.fa-xmark{
+  padding-left: 9px;
+  padding-right: 9px;
+}
+#addToList.active{
+  color: #b22020;
+}
+
+#addToList:hover{
+  background-color: #dfdede;
+}
+.itemImage:hover #addToList{
+  display:block;
+}
+#deleteFromList{
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #b22020;
+  margin-left: 20px;
+}
+#deleteFromList:hover{
+  background-color: #dfdede;
+}
+.itemImage a{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.item img{
+  mix-blend-mode: multiply;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+.itemBottom{
+  display: block;
+}
+.itemTitle{
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.itemTitle , .itemPrice{
+  box-sizing: border-box;
+  line-height: 26px!important;
+  font-family: 'Amazon Ember V2', sans-serif;
+}
+
+.itemTitle h3:hover span{
+  color: #bb832a ;
+  
+}
+.itemTitle a, .itemPrice a, .itemSeller a{
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.itemTitle span, .itemPrice span{
+  color: #0F1111;
+}
+.itemPrice{
+  margin-top: 15px;
+}
+
+.itemPrice span{
+  font-size: 26px;
+  color: #0F1111;
+}
+.itemSeller{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.itemSeller a{
+  font-size: 20px;
+  margin-top: 10px;
+  width: 150px;
+  text-align: center;
+  padding: 8px 16px;
+  /*background-color: rgb(255, 182, 47);*/
+  background-color: rgb(79 229 167);
+  color: rgb(255, 255, 255);
+  border-radius: 25px;
+}
+.itemSeller a:hover{
+  /*background-color:rgb(192, 129, 13); */
+  background-color: rgb(66, 184, 135);
+}
+
+#pagination{
+  display: flex;
+  background: #fff;
+  padding: 8px;
+  border-radius: 50px;
+  border: 1px solid rgb(228, 228, 228);
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  width: max-content;
+}
+#pagination a{
+  color: #20b2aa;
+  list-style: none;
+  line-height: 45px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+
+}
+#pagination a.numb{
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  margin: 0 3px;
+}
+#pagination a{
+  text-decoration: none;
+  color: #20b2aa;
+}
+#pagination span.dots{
+  margin: auto;
+  font-size: 22px;
+  cursor: default;
+}
+#pagination a.btn{
+  padding: 0 20px;
+}
+#pagination a.prev{
+  border-radius: 25px 5px 5px 25px;
+}
+#pagination a.next{
+  border-radius: 5px 25px 25px 5px;
+}
+#pagination a.active{
+  pointer-events: none;
+}
+#pagination a.active,
+#pagination a.numb:hover,
+#pagination a.btn:hover{
+  color: #fff;
+  background: #20b2aa;
+}
+
+#itemsOption{
+  display: flex;
+  align-items:flex-start;
+  justify-content: center;
+  margin-top: 20px;
+}
+#slct{
+  border-top: 1px solid black;
+}
+#itemsOption select{
+  font-size: 16px;
+  height: 30px;
+}
+#itemsOption select option{
+  font-weight: 500;
+
+}
+
+#sortByPrice{
+  border-top: 1px solid black;
+}
+#sortByPriceValue{
+ display: inline-flex;
+}
+#sortByPriceValue input{
+  margin-left: 6px;
+  width: 80px;
+  border-radius: 8px 8px 8px 8px;
+  border: 1px solid grey;
+  text-align: center;
+}
+#sortByPriceValue input:focus::placeholder{   
+  color: transparent;
+}
+#sortByPriceValue button{
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  border-radius: 8px 8px 8px 8px;
+  border: 1px solid grey;
+  margin-left: 6px;
+}
+#price-text{
+  margin-left: 6px;
+}
+
+
+@media only screen and (max-width: 1170px) {
+  #searchInput{ 
+    width: 300px;
+  }
+}
